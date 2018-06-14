@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Maze</title>
+        <script src="scripts/maze.min.js"></script>
+    </head>
+    <body>
+        <canvas id="maze" width="1920" height="1200" style="width:80%; height:auto; margin-left:10%;"></canvas>
+        <div style="width:100%; text-align:center">
+            <button type="button" onclick="game.startGame()">Start</button>
+            <button type="button" onclick="game.stopGame()">Stop</button>
+            <button type="button" onclick="game.resetGame()">Reset</button>
+        </div>
+        <div style="width:100%; text-align:center">
+            <label>
+                Framerate
+                <input type="number" min="1" max="120" value="30" step="1" onchange="game.setPerSecond(this.value)">
+            </label>
+        </div>
+        <script>
+            var game = new Maze(document.getElementById('maze'), 50, 25, 25);
+        </script>
+    </body>
+</html>
