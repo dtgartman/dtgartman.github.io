@@ -2,12 +2,11 @@
 <html>
     <head>
         <title>Maze</title>
-        <script src="scripts/maze.min.js"></script>
     </head>
     <body>
         <canvas id="maze" width="1920" height="1200" style="width:80%; height:auto; margin-left:10%;"></canvas>
         <div style="float: right; width:10%;">
-        	<form onsubmit="newMaze(this.width.value, this.height.value); return false;">
+        	<form onsubmit="newMaze(this.width.value, this.height.value, this.instant.checked); return false;">
 	        	<label>
 	        		Width
 	        		<input type="number" name="width" min="10" max="120" value="50" step="5">
@@ -16,6 +15,10 @@
 	        		Height
 	        		<input type="number" name="height" min="10" max="120" value="20" step="5">
 	        	</label>
+                <label>
+                    <input type="checkbox" name="instant" value="Y">
+                    Generate Instantly
+                </label>
 	        	<button type="submit">Start New Maze</button>
         	</form>
         </div>
@@ -23,18 +26,23 @@
             <button type="button" onclick="game.startGame()">Start</button>
             <button type="button" onclick="game.stopGame()">Stop</button>
             <button type="button" onclick="game.resetGame()">Reset</button>
+            <button type="button" onclick="game.renderMaze()">Instant Finish</button>
+            <label>
+                <input type="checkbox" name="hollow" id="hollow" value="Y" onchange="game.setHollow(this.checked)">
+                 Hollow (Reset Required)
+            </label>
         </div>
         <div style="width:100%; text-align:center">
             <label>
                 Framerate
                 <input type="number" min="1" max="120" value="30" step="1" onchange="game.setPerSecond(this.value)">
             </label>
-            
         </div>
+        <script src="scripts/maze.min.js"></script>
         <script>
         	const factor_x = 1.5;
         	const factor_y = 1.0125 * Math.sqrt(3);
-        	function newMaze(width, height) {
+        	function newMaze(width, height, instant) {
         		if (game) {
         			game.stopGame();
         		}
@@ -46,8 +54,11 @@
         		game = new Maze(canvasElement, Math.max(Math.floor(width), 20), 
         														 Math.max(Math.floor(height), 20), 
         														 Math.min(sizeX, sizeY));
+                if (instant) {
+                    game.renderMaze();
+                }
         	}	
-        
+            document.getElementById('hollow').checked = false;
             var game = new Maze(document.getElementById('maze'), 127, 68, 10);
         </script>
     </body>
