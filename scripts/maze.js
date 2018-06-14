@@ -204,5 +204,6 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, startCell) {
     this.setPerSecond = function(ps) {
         perSecond = ps || 30;
     };
+    context.clearRect(0, 0, canvas.width, canvas.height)
     drawWholeGrid();
 }

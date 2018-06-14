@@ -6,6 +6,19 @@
     </head>
     <body>
         <canvas id="maze" width="1920" height="1200" style="width:80%; height:auto; margin-left:10%;"></canvas>
+        <div style="float: right; width:10%;">
+        	<form onsubmit="newMaze(this.width.value, this.height.value); return false;">
+	        	<label>
+	        		Width
+	        		<input type="number" name="width" min="10" max="120" value="50" step="5">
+	        	</label>
+	        	<label>
+	        		Height
+	        		<input type="number" name="height" min="10" max="120" value="20" step="5">
+	        	</label>
+	        	<button type="submit">Start New Maze</button>
+        	</form>
+        </div>
         <div style="width:100%; text-align:center">
             <button type="button" onclick="game.startGame()">Start</button>
             <button type="button" onclick="game.stopGame()">Stop</button>
@@ -16,8 +29,25 @@
                 Framerate
                 <input type="number" min="1" max="120" value="30" step="1" onchange="game.setPerSecond(this.value)">
             </label>
+            
         </div>
         <script>
+        	const factor_x = 1.5;
+        	const factor_y = 1.0125 * Math.sqrt(3);
+        	function newMaze(width, height) {
+        		if (game) {
+        			game.stopGame();
+        		}
+        		var canvasElement = document.getElementById('maze'),
+                    sizeX = canvasElement.width/(Math.floor(width))/factor_x,
+                    sizeY = canvasElement.height/(Math.floor(height))/factor_y;
+                sizeX -= (sizeX * sizeX / canvasElement.width);
+                sizeY -= (sizeY * sizeY / canvasElement.height)
+        		game = new Maze(canvasElement, Math.max(Math.floor(width), 20), 
+        														 Math.max(Math.floor(height), 20), 
+        														 Math.min(sizeX, sizeY));
+        	}	
+        
             var game = new Maze(document.getElementById('maze'), 127, 68, 10);
         </script>
     </body>
