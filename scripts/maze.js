@@ -222,6 +222,8 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode, fram
     this.renderMaze = function (reset) {
         if (reset) {
             this.resetGame();
+        } else {
+        	this.stopGame();
         }
         clearWholeGrid();
 
