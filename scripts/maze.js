@@ -90,14 +90,14 @@ function drawHexFromArray(context, array, i, j, size) {
             context.lineTo(...getHexCorner(x, y, sz, c));
         }
     }
-    context.strokeStyle = (array[i][j] & Masks.VISITED) ? "#000000" : "#EE00EE";
+    context.strokeStyle = (array[i][j] & Masks.VISITED) ? "#FFFFFF" : "#FF00FF";
     context.lineWidth = getDefaultLineWidth(sz);
     context.stroke();
     if (array[i][j] & Masks.CURSOR) {
         context.fillStyle = "#00FF00";
         context.fillRect(x - .25 * sz, y - .25 * sz, sz / 2, sz / 2);
     } else {
-        context.clearRect(x - .26 * sz, y - .26 * sz, .52 * sz, .52 * sz);
+        context.clearRect(x - .3 * sz, y - .3 * sz, .62 * sz, .62 * sz);
     }
 }
 
@@ -151,7 +151,7 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
         clearLocalized = function (i, j) {
             var x, y;
             [x, y] = indexToXY(i, j, cellSize);
-            context.clearRect(x - 1.5 * cellSize, y - SQRT_3 * cellSize, 3 * cellSize, 2 * SQRT_3 * cellSize);  
+            context.clearRect(x - 1.7 * cellSize, y - (SQRT_3 + 0.2) * cellSize, 3.4 * cellSize, 2 * (SQRT_3 + 0.2) * cellSize);  
         },
         clearWholeGrid = function () {
             context.clearRect(0, 0, canvas.width, canvas.height);
