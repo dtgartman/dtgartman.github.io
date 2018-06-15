@@ -126,7 +126,6 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode, fram
             [a, b] = stack[stack.length-1];
             
             sD && clearLocalized(a, b);
-            sD && drawLocalized(a, b);
             
             grid[a][b] |= (Masks.VISITED | Masks.CURSOR);
             for (c = 0; c < Directions.length; c++) {
@@ -145,7 +144,6 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode, fram
                 stack.pop();
             }
             
-            sD && clearLocalized(a, b);
             sD && drawLocalized(a, b);
             
             grid[a][b] ^= Masks.CURSOR;
