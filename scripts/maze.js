@@ -101,15 +101,16 @@ function drawHexFromArray(context, array, i, j, size) {
     }
 }
 
-function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
+function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode, framerate) {
     "use strict";
     if (!canvasElement || !canvasElement.getContext) {
         throw "Could not initialize Game. Argument must be a valid canvas element.";
     }
     var that = this,
-        perSecond = 30,
+        perSecond = framerate > 0 ? framerate : 30,
         canvas = canvasElement,
         hollow = hollowMode,
+        needToDraw = false,
         context = canvas.getContext("2d"),
         cellSize = cellSize || DEFAULT_HEX_SIZE,
         stack = [[0,0]],
@@ -124,7 +125,8 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
             var a, b, c, dir, nbrInd, sD = (shouldDraw!==false), neighbors = [];
             [a, b] = stack[stack.length-1];
             
-            sD && clearLocalized(a, b)
+            sD && clearLocalized(a, b);
+            sD && drawLocalized(a, b);
             
             grid[a][b] |= (Masks.VISITED | Masks.CURSOR);
             for (c = 0; c < Directions.length; c++) {
@@ -143,6 +145,7 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
                 stack.pop();
             }
             
+            sD && clearLocalized(a, b);
             sD && drawLocalized(a, b);
             
             grid[a][b] ^= Masks.CURSOR;
@@ -159,12 +162,12 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
         drawLocalized = function (i, j) {
             var x, y;
             [x, y] = indexToXY(i, j, cellSize);
-            drawHexFromArray(context, grid, i, j, cellSize);
             var neighbors = Directions.map(d => getNeighborIndex(i, j, cellsWidth, cellsHeight, d))
                             .filter((v, i) => !!v);
             neighbors.forEach(nbr => {
                 drawHexFromArray(context, grid, ...nbr, cellSize);
             });
+            drawHexFromArray(context, grid, i, j, cellSize);
         },
         drawWholeGrid = function (forced) {
             if (hollow && !forced) { 
@@ -195,7 +198,10 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
         };
     this.startGame = function () {
         if (!running) {
-            drawWholeGrid();
+            if (needToDraw) {
+            	drawWholeGrid();
+            	needToDraw = false;
+            }
             animationFrameHandle = requestAnimationFrame(gameLoop);
             running = true;
         }
@@ -241,6 +247,7 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
         clearWholeGrid();
     };
     this.setHollow = function (isHollow) {
+    	needToDraw = isHollow && !hollow;
         hollow = isHollow;  
     };
     this.setPerSecond = function(ps) {

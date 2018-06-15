@@ -2,11 +2,12 @@
 <html>
     <head>
         <title>Maze</title>
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" 
         	  integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     </head>
     <body class="bg-dark">
-    	<form class="form-inline" onsubmit="newMaze(this.width.value, this.height.value, this.instant.checked, this.hollow.checked); return false;">
+    	<form class="form-inline" onsubmit="newMaze(this.width.value, this.height.value, this.instant.checked, this.hollow.checked, this.framerate.value); return false;">
    			<nav class="navbar navbar-expand-md navbar-light bg-dark border-bottom border-info w-100 mb-2">	
 	        	<div class="form-check form-check-inline text-light mr-3 mb-2 mb-sm-0">
 	                <input class="form-check-input" type="checkbox" id="instant" name="instant" value="Y">
@@ -43,8 +44,8 @@
 			            </div>
 			   		    <div class="input-group input-group-sm ml-2">
 			            	<div class="input-group-prepend"><span class="input-group-text">FPS</span></div>
-			            	<input class="form-control" type="number" placeholder="Framerate" aria-label="Framerate (FPS)"
-			            		   min="1" max="120" value="30" step="1" onchange="game.setPerSecond(this.value)">
+			            	<input class="form-control" type="number" name="framerate" id="framerate" placeholder="Framerate" aria-label="Framerate (FPS)"
+			            		   min="1" max="120" value="30" step="1" onchange="game.setPerSecond(this.value)" required>
 			            </div>
 		            </div>
 	            </div>
@@ -61,7 +62,7 @@
         <script>
         	const factor_x = 1.5;
         	const factor_y = 1.0125 * Math.sqrt(3);
-        	function newMaze(width, height, instant, hollow) {
+        	function newMaze(width, height, instant, hollow, framerate) {
         		if (game) {
         			game.stopGame();
         		}
@@ -73,7 +74,8 @@
         		game = new Maze(canvasElement, Math.max(Math.floor(width), 20), 
         									   Math.max(Math.floor(height), 20), 
         									   Math.min(sizeX, sizeY), 
-        									   hollow);
+        									   hollow,
+        									   framerate);
                 if (instant) {
                     game.renderMaze();
                 }
