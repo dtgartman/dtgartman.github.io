@@ -6,8 +6,8 @@
         	  integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     </head>
     <body class="bg-dark">
-   		<nav class="navbar navbar-expand navbar-light bg-dark border-bottom border-info mb-2">
-  			<form class="form-inline" onsubmit="newMaze(this.width.value, this.height.value, this.instant.checked); return false;">
+    	<form class="form-inline" onsubmit="newMaze(this.width.value, this.height.value, this.instant.checked, this.hollow.checked); return false;">
+   			<nav class="navbar navbar-expand navbar-light bg-dark border-bottom border-info mb-2">	
 	        	<div class="form-check form-check-inline text-light mr-3">
 	                <input class="form-check-input" type="checkbox" id="instant" name="instant" value="Y">
 	                <label class="form-check-label" for="instant">Instant</label>
@@ -29,27 +29,27 @@
   						<button class="btn btn-outline-success" type="submit">New Maze</button>
   					</div>
   				</div>
-  			</form>
-           	<div class="form-inline">
-  				<div class="form-check form-check-inline text-light ml-2">
-                	<input class="form-check-input" type="checkbox" name="hollow" id="hollow" value="Y" onchange="game.setHollow(this.checked)">
-           			<label class="form-check-label">Hollow (Reset Required)</label>
-           		</div>
-           		<div class="btn-toolbar">
-		           	<div class="btn-group btn-group-sm mb-2 mb-lg-0 ml-2">
-			            <button class="btn btn-success" type="button" onclick="game.startGame()">Start</button>
-			            <button class="btn btn-danger" type="button" onclick="game.stopGame()">Stop</button>
-			            <button class="btn btn-warning" type="button" onclick="game.resetGame()">Reset</button>
-			            <button class="btn btn-primary" type="button" onclick="game.renderMaze()">Finish</button>
-		            </div>
-		   		    <div class="input-group input-group-sm ml-2">
-		            	<div class="input-group-prepend"><span class="input-group-text">FPS</span></div>
-		            	<input class="form-control" type="number" placeholder="Framerate" aria-label="Framerate (FPS)"
-		            		   min="1" max="120" value="30" step="1" onchange="game.setPerSecond(this.value)">
+	           	<div class="form-inline">
+	  				<div class="form-check form-check-inline text-light ml-2">
+	                	<input class="form-check-input" type="checkbox" name="hollow" id="hollow" value="Y" onchange="game.setHollow(this.checked)">
+	           			<label class="form-check-label">Hollow (Reset Required)</label>
+	           		</div>
+	           		<div class="btn-toolbar">
+			           	<div class="btn-group btn-group-sm mb-2 mb-lg-0 ml-2">
+				            <button class="btn btn-success" type="button" onclick="game.startGame()">Start</button>
+				            <button class="btn btn-danger" type="button" onclick="game.stopGame()">Stop</button>
+				            <button class="btn btn-warning" type="button" onclick="game.resetGame()">Reset</button>
+				            <button class="btn btn-primary" type="button" onclick="game.renderMaze()">Finish</button>
+			            </div>
+			   		    <div class="input-group input-group-sm ml-2">
+			            	<div class="input-group-prepend"><span class="input-group-text">FPS</span></div>
+			            	<input class="form-control" type="number" placeholder="Framerate" aria-label="Framerate (FPS)"
+			            		   min="1" max="120" value="30" step="1" onchange="game.setPerSecond(this.value)">
+			            </div>
 		            </div>
 	            </div>
-            </div>
-  		</nav>
+	  		</nav>
+  		</form>
     	<div class="container-fluid">
 	    	<div class="row">
 	    		<div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
@@ -61,7 +61,7 @@
         <script>
         	const factor_x = 1.5;
         	const factor_y = 1.0125 * Math.sqrt(3);
-        	function newMaze(width, height, instant) {
+        	function newMaze(width, height, instant, hollow) {
         		if (game) {
         			game.stopGame();
         		}
@@ -71,8 +71,9 @@
                 sizeX -= (sizeX * sizeX / canvasElement.width);
                 sizeY -= (sizeY * sizeY / canvasElement.height)
         		game = new Maze(canvasElement, Math.max(Math.floor(width), 20), 
-        														 Math.max(Math.floor(height), 20), 
-        														 Math.min(sizeX, sizeY));
+        									   Math.max(Math.floor(height), 20), 
+        									   Math.min(sizeX, sizeY), 
+        									   hollow);
                 if (instant) {
                     game.renderMaze();
                 }
