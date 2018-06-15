@@ -221,7 +221,7 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode) {
         }
         clearWholeGrid();
 
-        context.fillStyle = "#003300";
+        context.fillStyle = "#FFCCFF";
         context.font = '40px san-serif';
 
         var textString = "Generating Maze, Please Wait...",
