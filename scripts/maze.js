@@ -161,7 +161,7 @@ function Maze(canvasElement, cellsWidth, cellsHeight, cellSize, hollowMode, fram
             var x, y;
             [x, y] = indexToXY(i, j, cellSize);
             var neighbors = Directions.map(d => getNeighborIndex(i, j, cellsWidth, cellsHeight, d))
-                            .filter((v, i) => !!v);
+                            .filter((v, i) => !!v && (grid[v[0]][v[1]] | Masks.VISITED));
             neighbors.forEach(nbr => {
                 drawHexFromArray(context, grid, ...nbr, cellSize);
             });
